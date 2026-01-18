@@ -1,0 +1,36 @@
+{
+  "name": "igptai",
+  "version": "1.1.0",
+  "description": "Official Node.js SDK for the iGPT API",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igptai/igpt-node.git"
+  },
+  "homepage": "https://www.igpt.ai",
+  "bugs": {
+    "url": "https://github.com/igptai/igpt-node/issues"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": ["dist/", "README.md", "LICENSE"],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && esbuild index.js --bundle --platform=node --target=es2020 --external:undici --format=esm --outfile=dist/index.mjs && esbuild index.js --bundle --platform=node --target=es2020 --external:undici --format=cjs --outfile=dist/index.cjs",
+    "prepublishOnly": "npm run build && npm audit --omit=dev"
+  },
+  "keywords": ["igpt", "ai", "client", "sdk", "api", "recall", "datasources", "connectors"],
+  "author": "iGPT.ai",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.27.2"
+  }
+}
