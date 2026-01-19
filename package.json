@@ -1,6 +1,9 @@
 {
   "name": "igptai",
   "version": "1.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Official Node.js SDK for the iGPT API",
   "type": "module",
   "engines": { "node": ">=18" },
