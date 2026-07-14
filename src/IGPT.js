@@ -20,12 +20,14 @@ const DEFAULT_STREAM_TIMEOUT_MS = 10 * 60_000; // 10 minutes
  */
 
 /**
- * @typedef {Object} AskParams
+ * @typedef {Object} RunParams
  * @property {string} input - (Required) The question or prompt to ask.
  * @property {string} [user] - (Required if not set in constructor) Unique user identifier.
  * @property {boolean} [stream] - (Optional) If true, returns an async iterable stream.
- * @property {string} [quality] - (Optional) Context engineering quality (e.g., "cef-1-normal").
+ * @property {string} [quality] - (Optional) Context engineering quality (e.g., "cef-4-high").
+ * @property {string} [reasoning_effort] - (Optional) Controls the reasoning effort (e.g., "low", "medium", or "high").
  * @property {string} [output_format] - (Optional) Output format: "text" (default), "json", or schema.
+ * @property {string} [instructions] - (Optional) Additional instructions controlling the response behavior, style, constraints, or structure.
  */
 
 /**
@@ -34,7 +36,17 @@ const DEFAULT_STREAM_TIMEOUT_MS = 10 * 60_000; // 10 minutes
  * @property {string} [user] - (Required if not set in constructor) Unique user identifier.
  * @property {string} [date_from] - (Optional) Filter by start date (YYYY-MM-DD).
  * @property {string} [date_to] - (Optional) Filter by end date (YYYY-MM-DD).
+ * @property {string} [filter_people] - Restrict results to content involving specific people.
  * @property {number} [max_results] - (Optional) Limit number of results (e.g. 50).
+ */
+
+/**
+ * @typedef {Object} AskParams
+ * @property {string} input - (Required) The question or prompt to ask.
+ * @property {string} [user] - (Required if not set in constructor) Unique user identifier.
+ * @property {boolean} [stream] - (Optional) If true, returns an async iterable stream.
+ * @property {string} [quality] - (Optional) Context engineering quality (e.g., "cef-1-normal").
+ * @property {string} [output_format] - (Optional) Output format: "text" (default), "json", or schema.
  */
 
 /**
@@ -53,10 +65,11 @@ const DEFAULT_STREAM_TIMEOUT_MS = 10 * 60_000; // 10 minutes
  */
 
 /**
- * Service for Recall operations (Ask, Search).
+ * Service for Recall operations (Run, Search, Ask).
  * @typedef {Object} RecallService
- * @property {(params: AskParams) => Promise<any|StreamParser>} ask - Generate a response based on input and context.
+ * @property {(params: RunParams) => Promise<any|StreamParser>} run - Generate an agentic response based on input and context.
  * @property {(params: SearchParams) => Promise<any>} search - Search connected datasources.
+ * @property {(params: AskParams) => Promise<any|StreamParser>} ask - Generate a response based on input and context.
  */
 
 /**
@@ -116,7 +129,7 @@ export default class IGPT {
         });
 
         // Initialize dynamic services
-        this.recall = /** @type {RecallService} */ this._createService("/recall", ["ask", "search"]);
+        this.recall = /** @type {RecallService} */ this._createService("/recall", ["run", "search", "ask"]);
         this.datasources = /** @type {DatasourcesService} */ this._createService("/datasources", ["list", "disconnect"]);
         this.connectors = /** @type {ConnectorsService} */ this._createService("/connectors", ["authorize"]);
     }
