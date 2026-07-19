@@ -711,10 +711,7 @@ console.log(res);
 ```js
 const res = await igpt.recall.search({
   query: "Open action items",
-  filter_people: [
-    "dvir@example.com",
-    "Jane Smith"
-  ],
+  filter_people: "Jane Smith",
   max_results: 25
 });
 
